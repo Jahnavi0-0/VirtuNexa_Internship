@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Color Palette Generator</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    .color-box {
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .color-box:hover {
+      transform: scale(1.05);
+    }
+    .clickable-title {
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 text-gray-900">
+  <!-- Navbar -->
+  <nav class="bg-white shadow-md sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+      <h1 class="text-xl font-bold clickable-title" onclick="scrollToAbout()">Color Palette Generator</h1>
+      <div class="space-x-4">
+        <a href="#generate" class="text-blue-500 hover:underline">Generate</a>
+        <a href="#about" class="text-blue-500 hover:underline">About</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Generate Section -->
+  <section id="generate" class="py-16 px-4 text-center">
+    <h2 class="text-3xl font-semibold mb-4">Generate Your Palette</h2>
+    <button onclick="generateColors()" class="bg-blue-600 text-white px-6 py-2 rounded-full mb-8 hover:bg-blue-700">Generate Colors</button>
+    <div id="palette" class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-4 justify-center max-w-4xl mx-auto"></div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="py-16 px-4 bg-white text-center">
+    <h2 class="text-3xl font-semibold mb-4">About This Tool</h2>
+    <p class="max-w-2xl mx-auto text-gray-700 text-lg">
+      The Color Palette Generator helps developers and designers instantly generate beautiful, random color palettes.
+      Click any color to copy its HEX code and start designing with ease. Built with HTML, Tailwind CSS, and JavaScript.
+    </p>
+  </section>
+
+  <script>
+    function generateColors() {
+      const palette = document.getElementById('palette');
+      palette.innerHTML = '';
+      for (let i = 0; i < 12; i++) {
+        const color = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
+        const div = document.createElement('div');
+        div.className = 'color-box h-24 rounded shadow-md flex items-center justify-center text-white font-semibold';
+        div.style.backgroundColor = color;
+        div.textContent = color;
+        div.onclick = () => {
+          navigator.clipboard.writeText(color);
+          alert(`Copied ${color} to clipboard!`);
+        };
+        palette.appendChild(div);
+      }
+    }
+
+    function scrollToAbout() {
+      document.querySelector('#about').scrollIntoView({
+        behavior: 'smooth'
+      });
+    }
+
+    // Smooth scrolling for other nav links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+          behavior: 'smooth'
+        });
+      });
+    });
+  </script>
+</body>
+</html>
